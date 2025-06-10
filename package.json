@@ -1,0 +1,43 @@
+{
+  "name": "api-testing-project",
+  "version": "1.0.0",
+  "description": "A comprehensive API testing project using popular public dummy APIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:jsonplaceholder": "jest src/tests/jsonplaceholder.test.js",
+    "test:reqres": "jest src/tests/reqres.test.js",
+    "test:httpbin": "jest src/tests/httpbin.test.js",
+    "test:dogs": "jest src/tests/dog-api.test.js",
+    "test:cats": "jest src/tests/cat-facts.test.js",
+    "postman": "newman run postman/API-Testing-Collection.json",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
+  },
+  "keywords": [
+    "api-testing",
+    "jest",
+    "axios",
+    "dummy-api",
+    "testing",
+    "jsonplaceholder",
+    "reqres",
+    "httpbin"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "axios": "^1.6.0",
+    "supertest": "^6.3.3",
+    "newman": "^6.0.0",
+    "eslint": "^8.55.0",
+    "@babel/preset-env": "^7.23.0",
+    "babel-jest": "^29.7.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
