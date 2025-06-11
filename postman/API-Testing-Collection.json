@@ -1,0 +1,549 @@
+{
+  "info": {
+    "name": "API Testing Collection",
+    "description": "Comprehensive API testing collection for popular dummy APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "JSONPlaceholder API",
+      "item": [
+        {
+          "name": "Get All Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{jsonplaceholder_url}}/posts",
+              "host": ["{{jsonplaceholder_url}}"],
+              "path": ["posts"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response is an array', function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Array has 100 posts', function () {",
+                  "    pm.expect(pm.response.json()).to.have.length(100);",
+                  "});",
+                  "",
+                  "pm.test('First post has required fields', function () {",
+                  "    const firstPost = pm.response.json()[0];",
+                  "    pm.expect(firstPost).to.have.property('userId');",
+                  "    pm.expect(firstPost).to.have.property('id');",
+                  "    pm.expect(firstPost).to.have.property('title');",
+                  "    pm.expect(firstPost).to.have.property('body');",
+                  "});",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Specific Post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{jsonplaceholder_url}}/posts/1",
+              "host": ["{{jsonplaceholder_url}}"],
+              "path": ["posts", "1"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Post has ID 1', function () {",
+                  "    pm.expect(pm.response.json().id).to.eql(1);",
+                  "});",
+                  "",
+                  "pm.test('Post has all required fields', function () {",
+                  "    const post = pm.response.json();",
+                  "    pm.expect(post).to.have.property('userId');",
+                  "    pm.expect(post).to.have.property('id');",
+                  "    pm.expect(post).to.have.property('title');",
+                  "    pm.expect(post).to.have.property('body');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create New Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n  \\"title\\": \\"Test Post\\",\\n  \\"body\\": \\"This is a test post\\",\\n  \\"userId\\": 1\\n}"
+            },
+            "url": {
+              "raw": "{{jsonplaceholder_url}}/posts",
+              "host": ["{{jsonplaceholder_url}}"],
+              "path": ["posts"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Created post has ID 101', function () {",
+                  "    pm.expect(pm.response.json().id).to.eql(101);",
+                  "});",
+                  "",
+                  "pm.test('Created post has correct title', function () {",
+                  "    pm.expect(pm.response.json().title).to.eql('Test Post');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ReqRes API",
+      "item": [
+        {
+          "name": "Get Users List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{reqres_url}}/users",
+              "host": ["{{reqres_url}}"],
+              "path": ["users"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has pagination data', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('page');",
+                  "    pm.expect(response).to.have.property('per_page');",
+                  "    pm.expect(response).to.have.property('total');",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});",
+                  "",
+                  "pm.test('Users array is not empty', function () {",
+                  "    pm.expect(pm.response.json().data).to.be.an('array').that.is.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n  \\"name\\": \\"John Doe\\",\\n  \\"job\\": \\"Software Developer\\"\\n}"
+            },
+            "url": {
+              "raw": "{{reqres_url}}/users",
+              "host": ["{{reqres_url}}"],
+              "path": ["users"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('User created with correct data', function () {",
+                  "    const user = pm.response.json();",
+                  "    pm.expect(user.name).to.eql('John Doe');",
+                  "    pm.expect(user.job).to.eql('Software Developer');",
+                  "    pm.expect(user).to.have.property('id');",
+                  "    pm.expect(user).to.have.property('createdAt');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n  \\"email\\": \\"eve.holt@reqres.in\\",\\n  \\"password\\": \\"cityslicka\\"\\n}"
+            },
+            "url": {
+              "raw": "{{reqres_url}}/login",
+              "host": ["{{reqres_url}}"],
+              "path": ["login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains token', function () {",
+                  "    pm.expect(pm.response.json()).to.have.property('token');",
+                  "});",
+                  "",
+                  "pm.test('Token is not empty', function () {",
+                  "    pm.expect(pm.response.json().token).to.not.be.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HTTPBin API",
+      "item": [
+        {
+          "name": "Test GET Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{httpbin_url}}/get?param1=value1&param2=value2",
+              "host": ["{{httpbin_url}}"],
+              "path": ["get"],
+              "query": [
+                {
+                  "key": "param1",
+                  "value": "value1"
+                },
+                {
+                  "key": "param2",
+                  "value": "value2"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains args', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.args.param1).to.eql('value1');",
+                  "    pm.expect(response.args.param2).to.eql('value2');",
+                  "});",
+                  "",
+                  "pm.test('Response has required fields', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('args');",
+                  "    pm.expect(response).to.have.property('headers');",
+                  "    pm.expect(response).to.have.property('origin');",
+                  "    pm.expect(response).to.have.property('url');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Test POST Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n  \\"test\\": \\"data\\",\\n  \\"number\\": 123\\n}"
+            },
+            "url": {
+              "raw": "{{httpbin_url}}/post",
+              "host": ["{{httpbin_url}}"],
+              "path": ["post"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('JSON data echoed back correctly', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.json.test).to.eql('data');",
+                  "    pm.expect(response.json.number).to.eql(123);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Test Status Code 418",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{httpbin_url}}/status/418",
+              "host": ["{{httpbin_url}}"],
+              "path": ["status", "418"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 418 (I\\'m a teapot)', function () {",
+                  "    pm.response.to.have.status(418);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dog API",
+      "item": [
+        {
+          "name": "Get Random Dog Image",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{dog_api_url}}/breeds/image/random",
+              "host": ["{{dog_api_url}}"],
+              "path": ["breeds", "image", "random"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has success status', function () {",
+                  "    pm.expect(pm.response.json().status).to.eql('success');",
+                  "});",
+                  "",
+                  "pm.test('Message contains image URL', function () {",
+                  "    const message = pm.response.json().message;",
+                  "    pm.expect(message).to.match(/^https:\\/\\/images\\.dog\\.ceo\\/breeds\\/.*\\.(jpg|jpeg|png)$/);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Breeds",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{dog_api_url}}/breeds/list/all",
+              "host": ["{{dog_api_url}}"],
+              "path": ["breeds", "list", "all"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has success status', function () {",
+                  "    pm.expect(pm.response.json().status).to.eql('success');",
+                  "});",
+                  "",
+                  "pm.test('Message contains breeds object', function () {",
+                  "    const message = pm.response.json().message;",
+                  "    pm.expect(message).to.be.an('object');",
+                  "    pm.expect(Object.keys(message).length).to.be.above(50);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cat Facts API",
+      "item": [
+        {
+          "name": "Get Random Cat Fact",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cat_facts_url}}/fact",
+              "host": ["{{cat_facts_url}}"],
+              "path": ["fact"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has fact and length', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('fact');",
+                  "    pm.expect(response).to.have.property('length');",
+                  "});",
+                  "",
+                  "pm.test('Fact length matches actual length', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.length).to.eql(response.fact.length);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Cat Facts List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{cat_facts_url}}/facts",
+              "host": ["{{cat_facts_url}}"],
+              "path": ["facts"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has pagination structure', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('current_page');",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response).to.have.property('total');",
+                  "});",
+                  "",
+                  "pm.test('Data array is not empty', function () {",
+                  "    pm.expect(pm.response.json().data).to.be.an('array').that.is.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "jsonplaceholder_url",
+      "value": "https://jsonplaceholder.typicode.com",
+      "type": "string"
+    },
+    {
+      "key": "reqres_url",
+      "value": "https://reqres.in/api",
+      "type": "string"
+    },
+    {
+      "key": "httpbin_url",
+      "value": "https://httpbin.org",
+      "type": "string"
+    },
+    {
+      "key": "dog_api_url",
+      "value": "https://dog.ceo/api",
+      "type": "string"
+    },
+    {
+      "key": "cat_facts_url",
+      "value": "https://catfact.ninja",
+      "type": "string"
+    }
+  ]
+}
